@@ -1,6 +1,19 @@
 import axios from 'axios'
+import { env } from 'process'
 
-const baseURL = '/api'
+declare global {
+  interface ImportMeta {
+    env: {
+      DEV: boolean
+      VITE_API_URL: string
+    }
+  }
+}
+
+const baseURL = import.meta.env.DEV 
+  ? '/api' 
+  : import.meta.env.VITE_API_URL || 'https://primetrade-backend-5lak.onrender.com/api'
+
 const api = axios.create({ baseURL })
 
 api.interceptors.request.use((config) => {
@@ -22,5 +35,3 @@ api.interceptors.response.use(
 )
 
 export default api
-
-
